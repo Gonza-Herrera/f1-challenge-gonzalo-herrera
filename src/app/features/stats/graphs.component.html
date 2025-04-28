@@ -1,0 +1,69 @@
+<div class="header-container">
+  <h2>Estadísticas</h2>
+</div>
+  
+<div class="search-container" style="margin-bottom: 20px;">
+  <form [formGroup]="searchForm">
+    <nz-input-group nzSearch style="width: 100%; margin-bottom: 10px;" [nzAddOnAfter]="yearSuffixIconButton">
+      <input type="text" nz-input placeholder="Año" formControlName="year" />
+    </nz-input-group>
+    <ng-template #yearSuffixIconButton>
+      <button nz-button nzType="primary" nzSearch type="button" (click)="searchByYear()">
+        <nz-icon nzType="search" nzTheme="outline"></nz-icon>
+      </button>
+    </ng-template>
+  </form>
+</div>
+
+@if (errorMessage) {
+  <nz-alert
+    nzType="error"
+    nzMessage="Error"
+    nzDescription="{{ errorMessage }}"
+    nzShowIcon>
+  </nz-alert>
+} @else {
+  @if (!isLoading && chartDataPilots.length) {
+    <nz-card class="custom-card" nzTitle="Top 5 Pilotos">
+      <ngx-charts-bar-vertical
+        [view]="view"
+        [scheme]="colorScheme"
+        [results]="chartDataPilots"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [legendTitle]="'Pilotos'"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        >
+      </ngx-charts-bar-vertical>
+    </nz-card>
+  }
+  
+  @if (!isLoading && chartDataConstructors.length) {
+    <nz-card class="custom-card" nzTitle="Top 5 Constructores" style="margin-top: 20px;">
+      <ngx-charts-bar-vertical
+        [view]="view"
+        [scheme]="colorScheme"
+        [results]="chartDataConstructors"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [legendTitle]="'Equipos'"
+        [showXAxisLabel]="true"
+        xAxisLabel="Equipos"
+        [showYAxisLabel]="true"
+        yAxisLabel="Victorias"
+        >
+      </ngx-charts-bar-vertical>
+    </nz-card>
+  }
+}
+  
+<ng-template #loadingTpl>
+  <nz-spin nzTip="Cargando gráficos..."></nz-spin>
+</ng-template>

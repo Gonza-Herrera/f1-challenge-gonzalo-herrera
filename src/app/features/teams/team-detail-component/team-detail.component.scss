@@ -1,0 +1,20 @@
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.custom-list {
+  background-color: white;
+  border-radius: 10px;
+}
+
+:host ::ng-deep .ant-list-item-meta-avatar {
+  margin-top: 10px;
+}
+
+@media (max-width: 1024px) {
+  .custom-list {
+    width: 100%;
+  }
+}

@@ -1,0 +1,67 @@
+<div class="header-container">
+  <h2>Equipos Actuales</h2>
+</div>
+
+@if (errorMessage) {
+  <nz-alert
+    nzType="error"
+    nzMessage="Error al cargar equipos"
+    nzDescription="{{ errorMessage }}"
+    nzShowIcon>
+  </nz-alert>
+} @else {
+  <nz-list
+    class="custom-list"
+    [nzDataSource]="list"
+    [nzRenderItem]="itemTemplate"
+    nzBordered
+    [nzSize]="'large'"
+    nzSplit
+    [nzNoResult]="'No hay equipos actuales.'"
+  >
+    <ng-template #itemTemplate let-item>
+      <nz-list-item nzGrid>
+        <ng-container *ngIf="!item.loading; else loadingTemplate">
+          <nz-list-item-meta
+            nzAvatar="assets/pilotof1.svg"
+            [nzTitle]="item.teamName"
+            nzDescription="País: {{ item.teamNationality ? (item.teamNationality | translateCountry) : '-' }} | 
+              Primera presentación: {{ item.firstAppeareance ? item.firstAppeareance : '-' }} | 
+              Campeonatos de pilotos: {{ item.driversChampionships ? item.driversChampionships : '-' }} | 
+              Campeonato de constructores: {{ item.constructorsChampionships ? item.constructorsChampionships : '-' }}"
+          >
+          </nz-list-item-meta>
+          <ul nz-list-item-actions>
+            <nz-list-item-action>
+              <button
+                nz-button
+                nzType="primary"
+                (click)="viewPilots(item)"
+                style="margin-right: 10px;"
+              >
+                Ver Pilotos
+              </button>
+              <a
+                nz-button
+                nzType="primary"
+                [href]="item.url"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Wikipedia
+              </a>
+            </nz-list-item-action>
+          </ul>
+        </ng-container>
+      </nz-list-item>
+    </ng-template>
+
+    <ng-template #loadingTemplate>
+      <nz-skeleton
+        [nzAvatar]="true"
+        [nzActive]="true"
+        [nzTitle]="false"
+      ></nz-skeleton>
+    </ng-template>
+  </nz-list>
+}

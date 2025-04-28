@@ -1,0 +1,121 @@
+<!-- Encabezado de la sección -->
+<div class="header-container">
+  <h2>Buscador de Pilotos</h2>
+  <button nz-button nzType="default" (click)="resetFilters()">
+    <nz-icon nzType="clear" nzTheme="outline" />
+    Borrar Filtros
+  </button>
+</div>
+
+<!-- Contenedor para los buscadores -->
+<div class="search-container">
+  <form [formGroup]="searchForm">
+    <!-- Buscador para "Año" -->
+    <nz-input-group
+      nzSearch
+      style="width: 100%; margin-right: 10px; margin-bottom: 10px;"
+      [nzAddOnAfter]="yearSuffixIconButton"
+    >
+      <input type="text" nz-input placeholder="Año" formControlName="year" />
+    </nz-input-group>
+    <ng-template #yearSuffixIconButton>
+      <button nz-button nzType="primary" nzSearch (click)="searchByYear()">
+        <nz-icon nzType="search" nzTheme="outline"></nz-icon>
+      </button>
+    </ng-template>
+
+    <!-- Buscador para "Nombre o Apellido" -->
+    <nz-input-group
+      nzSearch
+      style="width: 100%; margin-bottom: 10px;"
+      [nzAddOnAfter]="nameSuffixIconButton"
+    >
+      <input
+        type="text"
+        nz-input
+        placeholder="Nombre o Apellido"
+        formControlName="name"
+      />
+    </nz-input-group>
+    <ng-template #nameSuffixIconButton>
+      <button nz-button nzType="primary" nzSearch (click)="searchByNameOrSurname()" >
+        <nz-icon nzType="search" nzTheme="outline"></nz-icon>
+      </button>
+    </ng-template>
+  </form>
+  @if (searchForm.errors) {
+    <div class="error">
+      Por favor, utilice solo un filtro a la vez.
+    </div>
+  }
+  @if (searchForm.get('year')?.errors?.['pattern']) {
+    <div class="error">
+      Solo se permiten valores numéricos.
+    </div>
+  }
+  @if (searchForm.get('year')?.errors?.['max']) {
+    <div class="error">
+      El año no puede ser mayor que {{ currentYear }}.
+    </div>
+  }
+  @if (searchForm.get('name')?.errors?.['pattern']) {
+    <div class="error">
+      Solo se permiten letras en el nombre.
+    </div>
+  }
+  @if (searchForm.get('name')?.errors?.['minlength']) {
+    <div class="error">
+      Se permiten 4 letras como mínimo para la búsqueda.
+    </div>
+  }  
+</div>
+
+@if (errorMessage) {
+  <nz-alert
+    nzType="error"
+    nzMessage="Error"
+    [nzDescription]="errorMessage"
+    nzShowIcon>
+  </nz-alert>
+} @else {
+<!-- Listado de resultados con la misma estética del ejemplo -->
+<nz-list
+  class="custom-list"
+  [nzDataSource]="results"
+  [nzRenderItem]="itemTemplate"
+  nzBordered
+  nzSize="large"
+  nzSplit
+  [nzNoResult]="'No se encontraron resultados'"
+>
+  <ng-template #itemTemplate let-pilot>
+    <nz-list-item>
+      <ng-container>
+        <nz-list-item-meta
+          nzAvatar="assets/pilotof1.svg"
+          [nzTitle]="pilot.name + ' ' + pilot.surname"
+          nzDescription="País: {{ pilot.nationality ? (pilot.nationality | translateCountry) : '-' }} | 
+            Nacimiento: {{ pilot.birthday ? pilot.birthday : '-' }} | 
+            Número: {{ pilot.number ? pilot.number : '-' }} | 
+            Apodo: {{ pilot.shortName ? pilot.shortName : '-' }}"
+        >
+        </nz-list-item-meta>
+        <ul nz-list-item-actions>
+          <nz-list-item-action>
+            <a
+              nz-button
+              nzType="primary"
+              [href]="pilot.url"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Wikipedia
+            </a>
+          </nz-list-item-action>
+        </ul>
+      </ng-container>
+    </nz-list-item>
+  </ng-template>
+
+</nz-list>
+}

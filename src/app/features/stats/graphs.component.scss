@@ -1,0 +1,35 @@
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+}
+
+.search-container {
+  width: 25%;
+}
+
+.custom-card {
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+/* Pantallas medianas */
+@media (max-width: 1024px) {
+  .search-container {
+    width: 50%;
+  }
+}
+
+/* Pantallas pequeñas */
+@media (max-width: 768px) {
+  .search-container {
+    width: 75%;
+  }
+}
+
+/* Pantallas extra pequeñas */
+@media (max-width: 576px) {
+  .search-container {
+    width: 100%;
+  }
+}

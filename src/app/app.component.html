@@ -1,0 +1,24 @@
+<nz-layout class="custom-layout">
+  <nz-header class="custom-header">
+    <div class="header-container">
+      <div class="header-title">
+        F1 App - Gonzalo Herrera
+      </div>
+      <ul nz-menu nzMode="horizontal" nzTheme="dark" class="header-menu">
+        <li nz-menu-item nzMatchRouter>
+          <a [routerLink]="['/teams']">Teams</a>
+        </li>
+        <li nz-menu-item nzMatchRouter>
+          <a [routerLink]="['/pilots']">Buscar Pilotos</a>
+        </li>
+        <li nz-menu-item nzMatchRouter>
+          <a [routerLink]="['/stats']">Estadísticas</a>
+        </li>
+      </ul>      
+    </div>
+  </nz-header>
+  <nz-content class="custom-container">
+    <app-loading></app-loading>
+    <router-outlet></router-outlet>
+  </nz-content>
+</nz-layout>

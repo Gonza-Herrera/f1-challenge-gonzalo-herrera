@@ -1,0 +1,67 @@
+<div class="header-container">
+  <h2>Pilotos del Equipo: {{ teamName }}</h2>
+  <button nz-button nzType="default" [routerLink]="['/teams']">
+    <nz-icon nzType="arrow-left" nzTheme="outline"></nz-icon>
+    Volver
+  </button>
+</div>
+
+@if (errorMessage) {
+<nz-alert
+  nzType="error"
+  nzMessage="Error"
+  [nzDescription]="errorMessage"
+  nzShowIcon
+>
+</nz-alert>
+} @else {
+<nz-list
+  class="custom-list"
+  [nzDataSource]="pilots"
+  [nzRenderItem]="item"
+  nzBordered
+  nzSize="large"
+  nzSplit
+  [nzNoResult]="'No se encontraron pilotos en el equipo.'"
+>
+  <!-- Template para cada driver -->
+  <ng-template #item let-item>
+    <nz-list-item>
+      <ng-container *ngIf="!item.loading; else loadingTpl">
+        <nz-list-item-meta
+          nzAvatar="assets/pilotof1.svg"
+          [nzTitle]="item.name + ' ' + item.surname"
+          nzDescription="País: {{
+            item.nationality ? (item.nationality | translateCountry) : '-'}} | 
+            Nacimiento: {{ item.birthday ? item.birthday : '-' }} | 
+            Número: {{ item.number ? item.number : '-' }} | 
+            Apodo: {{ item.shortName ? item.shortName : '-' }}"
+        >
+        </nz-list-item-meta>
+        <ul nz-list-item-actions>
+          <nz-list-item-action>
+            <a
+              nz-button
+              nzType="primary"
+              [href]="item.url"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Wikipedia
+            </a>
+          </nz-list-item-action>
+        </ul>
+      </ng-container>
+    </nz-list-item>
+  </ng-template>
+
+  <!-- Template de skeleton cuando item.loading es true -->
+  <ng-template #loadingTpl>
+    <nz-skeleton
+      [nzAvatar]="true"
+      [nzActive]="true"
+      [nzTitle]="false"
+    ></nz-skeleton>
+  </ng-template>
+</nz-list>
+}
